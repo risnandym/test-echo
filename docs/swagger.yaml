@@ -1,0 +1,188 @@
+definitions:
+  handler.LoginInput:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  model.CreateUserRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.UpdateUserRequest:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      name:
+        type: string
+      password:
+        type: string
+    type: object
+  model.UserResponse:
+    properties:
+      age:
+        type: integer
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+    type: object
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+paths:
+  /users/:
+    get:
+      description: get all user.
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserResponse'
+      summary: Get All User.
+      tags:
+      - User
+    post:
+      description: registering a user from full access.
+      parameters:
+      - description: the body to register a FULL ACCESS account (USER)
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/model.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Register a Full Access account (USER).
+      tags:
+      - Auth
+  /users/{id}:
+    delete:
+      description: Delete User by id.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+      security:
+      - BearerToken: []
+      summary: Delete User
+      tags:
+      - User
+    get:
+      description: get user.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserResponse'
+      security:
+      - BearerToken: []
+      summary: Get User.
+      tags:
+      - User
+    put:
+      description: update user.
+      parameters:
+      - description: 'Authorization. How to input in swagger : ''Bearer <insert_your_token_here>'''
+        in: header
+        name: Authorization
+        required: true
+        type: string
+      - description: user id
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: the body to register a FULL ACCESS account (USER)
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/model.UpdateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/model.UserResponse'
+      security:
+      - BearerToken: []
+      summary: Update User.
+      tags:
+      - User
+  /users/login:
+    post:
+      description: Logging in to get jwt token to access admin or user api by roles.
+      parameters:
+      - description: the body to login a user
+        in: body
+        name: Body
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Login.
+      tags:
+      - Auth
+swagger: "2.0"
